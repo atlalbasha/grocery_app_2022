@@ -4,10 +4,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:grocery_app_2022/screens/user/category_screen.dart';
 import 'package:grocery_app_2022/screens/user/favorites_screen.dart';
-import 'package:grocery_app_2022/screens/user/profile_screen.dart';
+import 'package:grocery_app_2022/screens/user/profile/profile_screen.dart';
 import 'package:unicons/unicons.dart';
 
-import '../screens/user/cart_screen.dart';
+import '../screens/user/cart/cart_screen.dart';
 import '../screens/user/home_screen.dart';
 
 class UserPage extends StatefulWidget {
@@ -19,7 +19,7 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  static final List<Widget> _screens = <Widget>[
+  static final List<Widget> _screens = [
     const HomeScreen(),
     const CategoryScreen(),
     const CartScreen(),
@@ -45,6 +45,7 @@ class _UserPageState extends State<UserPage> {
         onTap: _onItemTapped,
         currentIndex: _selectedIndex,
         elevation: 10,
+
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.blueGrey.shade900,

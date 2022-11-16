@@ -18,7 +18,7 @@ class Styles {
       TextStyle(fontSize: 26, color: textColor, fontWeight: FontWeight.bold);
 
   static TextStyle headLineStyle2 =
-      TextStyle(fontSize: 21, color: textColor, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 18, color: textColor, fontWeight: FontWeight.bold);
 
   static TextStyle headLineStyle3 = TextStyle(
       fontSize: 16, color: secondaryColor, fontWeight: FontWeight.bold);
@@ -64,6 +64,19 @@ class Styles {
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 1, color: Styles.secondaryColor),
+    ),
+  );
+  static InputDecoration dropdownDecoration = InputDecoration(
+    filled: true,
+    fillColor: Colors.white,
+    prefixIcon: Icon(Icons.functions_outlined, color: Styles.orangeColor),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
     ),
   );
 }

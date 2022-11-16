@@ -47,5 +47,14 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Add the following key to enable the image picker -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>app needs permission for the photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>app needs access to the camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>app needs access to the microphone</string>
+
 </dict>
 </plist>

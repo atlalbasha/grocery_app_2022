@@ -15,7 +15,7 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  static final List<Widget> _screens = <Widget>[
+  static final List<Widget> _screens = [
     const AdminHomeScreen(),
     const UploadProductScreen(),
   ];
