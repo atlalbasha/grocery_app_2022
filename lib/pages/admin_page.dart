@@ -5,10 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:grocery_app_2022/screens/admin/upload_product_screen.dart';
 
 import '../screens/admin/admin_home_screen.dart';
+import '../screens/user/home_screen.dart';
 
 class AdminPage extends StatefulWidget {
-  final Function() adminRole;
-  const AdminPage({super.key, required this.adminRole});
+  const AdminPage({super.key});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -16,7 +16,7 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   static final List<Widget> _screens = [
-    const AdminHomeScreen(),
+    const HomeScreen(),
     const UploadProductScreen(),
   ];
   int _selectedIndex = 0;

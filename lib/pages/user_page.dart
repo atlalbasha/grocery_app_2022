@@ -11,8 +11,7 @@ import '../screens/user/cart/cart_screen.dart';
 import '../screens/user/home_screen.dart';
 
 class UserPage extends StatefulWidget {
-  final Function() userRole;
-  const UserPage({super.key, required this.userRole});
+  const UserPage({super.key});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -24,7 +23,7 @@ class _UserPageState extends State<UserPage> {
     const CategoryScreen(),
     const CartScreen(),
     const FavoritesScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
   int _selectedIndex = 0;
   int count = 0;
@@ -45,7 +44,6 @@ class _UserPageState extends State<UserPage> {
         onTap: _onItemTapped,
         currentIndex: _selectedIndex,
         elevation: 10,
-
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: Colors.blueGrey.shade900,

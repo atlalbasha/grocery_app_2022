@@ -1,10 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:grocery_app_2022/authentication/auth_toggle.dart';
+
 import 'package:grocery_app_2022/pages/roles_toggle.dart';
 import 'package:grocery_app_2022/styles/styles.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'controller/user_controller.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    const GetMaterialApp(
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,20 +27,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final userController = Get.put(UserController());
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         scaffoldBackgroundColor: Styles.bgColor,
         colorScheme: ColorScheme.fromSwatch().copyWith(
             secondary: Styles.primaryColor, primary: Styles.primaryColor),
-        textTheme: TextTheme(
-            headline1: Styles.headLineStyle1,
-            headline2: Styles.headLineStyle2,
-            headline3: Styles.headLineStyle3,
-            headline4: Styles.headLineStyle4,
-            button: Styles.headLineStyle3),
       ),
-      home: false ? AuthToggle() : RolesToggle(), // RolesToggle(),
+      home: Scaffold(
+        body: Obx(() {
+          if (userController.userFirebase == null) {
+            return const AuthToggle();
+          } else {
+            return RolesToggle();
+          }
+        }),
+      ),
     );
   }
 }

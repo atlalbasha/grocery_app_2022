@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import 'package:grocery_app_2022/styles/styles.dart';
@@ -19,7 +20,8 @@ class _PaymentState extends State<PaymentCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [
+      backgroundColor: Styles.bgColor,
+      body: Column(children: [
         const Gap(20),
         Text('Payment ',
             style: Styles.headLineStyle2, textAlign: TextAlign.center),
@@ -109,18 +111,20 @@ class _PaymentState extends State<PaymentCart> {
             ],
           ),
         ),
+        const Spacer(),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: SizedBox(
-            height: AppLayout.getHeight(50),
+            width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: ((context) => PaymentCart()))),
+              onPressed: () {
+                Get.to(() => PaymentCart());
+              },
               child: const Text('Confirm payment'),
             ),
           ),
         ),
-        const Gap(20),
+        const Gap(10),
       ]),
     );
   }

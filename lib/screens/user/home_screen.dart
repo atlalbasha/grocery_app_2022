@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/search_bar/gf_search_bar.dart';
 import 'package:grocery_app_2022/screens/user/product/all_products.dart';
+import 'package:grocery_app_2022/screens/user/product/fruits.dart';
+import 'package:grocery_app_2022/screens/user/product/category_product.dart';
 
 import '../../styles/app_layout.dart';
 import '../../styles/styles.dart';
@@ -13,12 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List list = [
-    "Flutter",
-    "React",
-    "Ionic",
-    "Xamarin",
-  ];
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -52,24 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             AllProducts(),
-            Center(
-              child: Text('Fruits'),
-            ),
-            Center(
-              child: Text('Vegetables'),
-            ),
-            Center(
-              child: Text('Drinks'),
-            ),
-            Center(
-              child: Text('Bakery'),
-            ),
-            Center(
-              child: Text('Other'),
-            ),
+            CategoryProduct(category: 'Fruits'),
+            CategoryProduct(category: 'Vegetables'),
+            CategoryProduct(category: 'Drinks'),
+            CategoryProduct(category: 'Bakery'),
+            CategoryProduct(category: 'Other'),
           ],
         ),
       ),

@@ -1,115 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:grocery_app_2022/controller/product_controller.dart';
+import 'package:grocery_app_2022/models/product.dart';
+import 'package:grocery_app_2022/controller/cart_controller.dart';
 import 'package:grocery_app_2022/screens/user/product/product_details_screen.dart';
+import 'package:grocery_app_2022/styles/app_layout.dart';
 
 import '../../../styles/styles.dart';
 
-class ProductCard extends StatefulWidget {
-  const ProductCard({
+class ProductCard extends StatelessWidget {
+  ProductCard({
     Key? key,
+    required this.product,
   }) : super(key: key);
+  final Product product;
 
-  @override
-  State<ProductCard> createState() => _ProductCardState();
-}
+  final CartController cartController = Get.put(CartController());
 
-class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: ((context) => ProductDetails()))),
+      onTap: () {
+        Get.to(() => ProductDetails(product: product));
+      },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
-        child: LayoutBuilder(
-          builder: (BuildContext, BoxConstraints) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
               children: [
-                Stack(
-                  children: [
-                    Center(
-                      child: SizedBox(
-                        height: 125,
-                        width: 200,
-                        child: Hero(
-                          transitionOnUserGestures: true,
-                          tag: 1,
-                          child: Image.network(
-                              'http://clipart-library.com/image_gallery2/Banana-PNG-File.png'),
-                        ),
-                      ),
+                Center(
+                  child: SizedBox(
+                    height: AppLayout.getHeight(100),
+                    width: AppLayout.getHeight(200),
+                    child: Hero(
+                      transitionOnUserGestures: true,
+                      tag: product,
+                      child: Image.network(product.imageUrl),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.discount_outlined,
-                            color: Styles.orangeColor,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            print('object');
-                          },
-                          child: Icon(
-                            Icons.favorite_border,
-                            color: Styles.orangeColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-                const Gap(10),
-                Text(
-                  'title ',
-                  style: Styles.textStyle,
-                  maxLines: 2,
-                ),
-                Text('unit', style: Styles.headLineStyle4),
-                Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          ' price',
-                          style: Styles.headLineStyle4.copyWith(
-                              decoration: TextDecoration.lineThrough,
-                              color: Styles.orangeColor),
-                        ),
-                        const Gap(4),
-                        Text('discount', style: Styles.headLineStyle4),
-                      ],
-                    ),
+                    product.discount != 0
+                        ? Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '${product.discount} %',
+                              style: Styles.headLineStyle4
+                                  .copyWith(color: Colors.white),
+                            ),
+                          )
+                        : const SizedBox(),
                     InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Styles.orangeColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
+                      onTap: () {
+                        print('object');
+                      },
+                      child: Icon(
+                        Icons.favorite_border,
+                        color: Styles.orangeColor,
                       ),
                     ),
                   ],
                 ),
               ],
-            );
-          },
+            ),
+            const Gap(10),
+            Text(
+              product.title,
+              style: Styles.textStyle,
+              maxLines: 2,
+            ),
+            Text(product.unit, style: Styles.headLineStyle4),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '${product.price.toString()}\$',
+                      style: Styles.headLineStyle4.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          color: Styles.orangeColor),
+                    ),
+                    const Gap(4),
+                    Text('${product.discount.toString()}\$',
+                        style: Styles.headLineStyle4),
+                  ],
+                ),
+                InkWell(
+                  onTap: () => {
+                    print('object'),
+                    cartController.addProduct(product),
+                  },
+                  child: Container(
+                    height: AppLayout.getHeight(30),
+                    width: AppLayout.getWidth(30),
+                    decoration: BoxDecoration(
+                      color: Styles.orangeColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

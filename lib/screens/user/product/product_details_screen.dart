@@ -3,14 +3,15 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
 import 'package:getwidget/components/rating/gf_rating.dart';
+import 'package:grocery_app_2022/models/product.dart';
 
 import '../../../styles/app_layout.dart';
 import '../../../styles/styles.dart';
 import '../cart/payment_cart.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key, this.item});
-  final dynamic item;
+  const ProductDetails({super.key, required this.product});
+  final Product product;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -25,13 +26,12 @@ class _ProductDetailsState extends State<ProductDetails> {
         children: [
           Center(
             child: SizedBox(
-              height: 125,
-              width: 200,
+              height: AppLayout.getHeight(300),
+              width: AppLayout.getHeight(300),
               child: Hero(
                 transitionOnUserGestures: true,
-                tag: 1,
-                child: Image.network(
-                    'http://clipart-library.com/image_gallery2/Banana-PNG-File.png'),
+                tag: widget.product,
+                child: Image.network(widget.product.imageUrl),
               ),
             ),
           ),

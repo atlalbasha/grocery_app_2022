@@ -1,14 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:getwidget/components/button/gf_button.dart';
+import 'package:grocery_app_2022/controller/user_controller.dart';
+
 import 'package:grocery_app_2022/styles/app_layout.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:unicons/unicons.dart';
 import '../styles/styles.dart';
+
 import 'otp_verification.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpPage extends StatefulWidget {
   final Function() onClickedSignUp;
@@ -32,6 +41,8 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  final userController = Get.put(UserController());
+
   @override
   void dispose() {
     controller.dispose();
@@ -48,11 +59,12 @@ class _SignUpPageState extends State<SignUpPage> {
           child: ListView(
             children: [
               Gap(AppLayout.getHeight(40)),
-              Image.asset(
-                'assets/images/otp.png',
+              SvgPicture.asset(
+                'assets/images/welcome.svg',
                 height: 200,
                 width: 200,
               ),
+
               Gap(AppLayout.getHeight(40)),
               Text(
                 'Register',
@@ -132,10 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     //formKey.currentState?.validate();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpVerification()));
+                    Get.to(() => OtpVerification());
                   },
                   child: Text('Sign Up'),
                 ),
@@ -151,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: AppLayout.getHeight(50),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    print("You pressed Icon Elevated Button");
+                    // authController.signInWithFacebook();
                   },
                   icon: Icon(UniconsLine.facebook,
                       color: Styles.whiteColor), //icon data for elevated button
@@ -165,10 +174,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: AppLayout.getHeight(50),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    print("You pressed Icon Elevated Button");
+                    userController.signInWithGoogle();
                   },
-                  icon: Icon(UniconsLine.google,
-                      color: Styles.whiteColor), //icon data for elevated button
+                  icon: FaIcon(
+                      FontAwesomeIcons.google), //icon data for elevated button
                   label: const Text(
                     "Google",
                   ), //label text

@@ -8,10 +8,12 @@ import '../styles/styles.dart';
 class BuildImage extends StatelessWidget {
   final XFile? imagePath;
   final VoidCallback callback;
+  final String? imageUrl;
   const BuildImage({
     Key? key,
     this.imagePath,
     required this.callback,
+    this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -30,13 +32,10 @@ class BuildImage extends StatelessWidget {
               child: Center(
                 child: imagePath == null
                     ? CircleAvatar(
-                        backgroundColor: Styles.orangeColor,
+                        backgroundImage: imageUrl == null
+                            ? AssetImage('assets/images/user.png')
+                            : NetworkImage(imageUrl!) as ImageProvider,
                         radius: 150.0,
-                        child: Icon(
-                          UniconsLine.image_plus,
-                          color: Styles.whiteColor,
-                          size: 80,
-                        ),
                       )
                     : CircleAvatar(
                         backgroundColor: Styles.orangeColor,

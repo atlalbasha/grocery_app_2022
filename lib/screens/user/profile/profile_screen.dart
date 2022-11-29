@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:get/get.dart';
+import 'package:grocery_app_2022/controller/user_controller.dart';
+
 import 'package:grocery_app_2022/screens/user/profile/components/profile_item.dart';
 import 'package:grocery_app_2022/screens/user/profile/help_support.dart';
 import 'package:grocery_app_2022/screens/user/profile/settings.dart.dart';
@@ -15,45 +17,46 @@ import '../../../styles/app_layout.dart';
 import '../../../styles/styles.dart';
 import '../../../widgets/build_image.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({super.key});
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  XFile? image;
-  Future pickImage() async {
-    try {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage == null) return;
-      setState(() {
-        image = pickedImage;
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick image:  $e');
-    }
-  }
+  UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
+    userController.getUser();
     return Scaffold(
       body: ListView(
         children: [
           Gap(AppLayout.getHeight(50)),
-          BuildImage(imagePath: image, callback: () => pickImage()),
+          Obx(
+            () => Container(
+                height: AppLayout.getHeight(150),
+                width: AppLayout.getWidth(150),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Styles.orangeColor,
+                ),
+                child: Center(
+                  child: CircleAvatar(
+                    backgroundImage: userController.myUser.imageUrl == null
+                        ? AssetImage('assets/images/user.png')
+                        : NetworkImage(userController.myUser.imageUrl!)
+                            as ImageProvider,
+                    radius: 150.0,
+                  ),
+                )),
+          ),
           Gap(AppLayout.getHeight(20)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'User Name',
+                userController.myUser.name.toString(),
                 style: Styles.textStyle,
               ),
               Text(
-                'atlal.basha@gmail.com',
+                userController.myUser.email.toString(),
                 style: Styles.headLineStyle4,
               ),
             ],
@@ -128,7 +131,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ProfileItem(
             icon: UniconsLine.sign_out_alt,
-            onTap: () {},
+            onTap: () {
+              userController.signOut();
+            },
             title: 'Logout',
           ),
         ],

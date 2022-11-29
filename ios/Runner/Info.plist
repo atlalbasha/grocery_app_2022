@@ -56,5 +56,20 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>app needs access to the microphone</string>
 
+	<!-- Google Sign-in Section -->
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<!-- TODO Replace this value: -->
+			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+			<string>com.googleusercontent.apps.754521219990-78ajo9atvn86nn0g42n0dsghf03tl7cp</string>
+		</array>
+	</dict>
+</array>
+
 </dict>
 </plist>
