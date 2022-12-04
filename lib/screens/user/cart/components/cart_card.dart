@@ -50,10 +50,8 @@ class CartCard extends StatelessWidget {
                         const Gap(6),
                         Text(
                           product.discount.isGreaterThan(0)
-                              ? (product.price -
-                                      (product.price * product.discount / 100))
-                                  .toStringAsFixed(2)
-                              : product.price.toString(),
+                              ? '${(product.price - (product.price * product.discount / 100)).toStringAsFixed(2)}\$'
+                              : '${product.price.toStringAsFixed(2)}\$',
                           style: Styles.headLineStyle4,
                         ),
                       ],

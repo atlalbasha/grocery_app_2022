@@ -17,17 +17,28 @@ class ImageController extends GetxController {
   final _imagePicker = ImagePicker();
 
   Future<void> pickImage() async {
-    final pickedFile =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      image = pickedFile;
-      // imagePath = pickedFile.path;
-      await StorageDB().uploadImage(image!, 'users_images');
-      imagePath = await StorageDB().getImageUrl(image!.name, 'users_images');
-    } else {
+    try {
+      final pickedFile =
+          await _imagePicker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        image = pickedFile;
+        // imagePath = pickedFile.path;
+        await StorageDB().uploadImage(image!, 'users_images');
+        imagePath = await StorageDB().getImageUrl(image!.name, 'users_images');
+      } else {
+        Get.snackbar(
+          'No image selected',
+          'Please select an image',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Styles.orangeColor,
+          colorText: Styles.whiteColor,
+          duration: const Duration(seconds: 1),
+        );
+      }
+    } catch (e) {
       Get.snackbar(
-        'No image selected',
-        'Please select an image',
+        'Error',
+        e.toString(),
         snackPosition: SnackPosition.TOP,
         backgroundColor: Styles.orangeColor,
         colorText: Styles.whiteColor,

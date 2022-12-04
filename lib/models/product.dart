@@ -25,6 +25,7 @@ class Product {
   RxInt quantity = 1.obs;
 
   Product.fromDocumentSnapshot({required DocumentSnapshot snapshot}) {
+    id = snapshot.id;
     title = snapshot['title'];
     price = snapshot['price'];
     discount = snapshot['discount'];

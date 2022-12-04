@@ -7,6 +7,7 @@ import 'package:grocery_app_2022/models/product.dart';
 
 import '../../../styles/app_layout.dart';
 import '../../../styles/styles.dart';
+import '../../../widgets/build_appbar.dart';
 import '../cart/payment_cart.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -22,128 +23,133 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Center(
-            child: SizedBox(
-              height: AppLayout.getHeight(300),
-              width: AppLayout.getHeight(300),
-              child: Hero(
-                transitionOnUserGestures: true,
-                tag: widget.product,
-                child: Image.network(widget.product.imageUrl),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
+          children: [
+            BuildAppBar(title: 'Product Details'),
+            Center(
+              child: SizedBox(
+                height: AppLayout.getHeight(300),
+                width: AppLayout.getHeight(300),
+                child: Hero(
+                  transitionOnUserGestures: true,
+                  tag: widget.product,
+                  child: Image.network(widget.product.imageUrl),
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('title', style: Styles.headLineStyle2),
-                      Text('Available in stock', style: Styles.headLineStyle4),
-                    ],
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.deepOrangeAccent,
-                    icon: Icon(Icons.favorite_border),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Styles.orangeColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const Icon(
-                    Icons.remove,
-                    color: Colors.white,
-                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('title', style: Styles.headLineStyle2),
+                        Text('Available in stock',
+                            style: Styles.headLineStyle4),
+                      ],
+                    )
+                  ],
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Styles.whiteColor),
-                  borderRadius: BorderRadius.circular(8),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      color: Colors.deepOrangeAccent,
+                      icon: Icon(Icons.favorite_border),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  '1',
-                  style: Styles.headLineStyle2,
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Styles.orangeColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Spacer(),
-              Text('22', style: Styles.headLineStyle2)
-            ],
-          ),
-          Divider(color: Colors.blueGrey),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Item Description'),
-                SizedBox(height: 8),
-                Text(
-                    'Et non aliquip in consequat nulla velit minim et. Lorem commodo cillum cupidatat in Lorem. Tempor veniam amet nostrud ex minim officia occaecat culpa mollit tempor ipsum id duis. Cillum sunt pariatur esse ad et amet nostrud velit eu ullamco veniam amet veniam.'),
               ],
             ),
-          ),
-          GFRating(
-            color: Styles.orangeColor,
-            borderColor: Styles.orangeColor,
-            value: rating,
-            onChanged: (value) {
-              setState(() {
-                rating = value;
-              });
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              height: AppLayout.getHeight(50),
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: ((context) => PaymentCart()))),
-                child: Text('Add To Cart'),
+            Row(
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Styles.orangeColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Icon(
+                      Icons.remove,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Styles.whiteColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '1',
+                    style: Styles.headLineStyle2,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Styles.orangeColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Text('22', style: Styles.headLineStyle2)
+              ],
+            ),
+            Divider(color: Colors.blueGrey),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Item Description'),
+                  SizedBox(height: 8),
+                  Text(
+                      'Et non aliquip in consequat nulla velit minim et. Lorem commodo cillum cupidatat in Lorem. Tempor veniam amet nostrud ex minim officia occaecat culpa mollit tempor ipsum id duis. Cillum sunt pariatur esse ad et amet nostrud velit eu ullamco veniam amet veniam.'),
+                ],
               ),
             ),
-          ),
-          Gap(20),
-        ],
+            GFRating(
+              color: Styles.orangeColor,
+              borderColor: Styles.orangeColor,
+              value: rating,
+              onChanged: (value) {
+                setState(() {
+                  rating = value;
+                });
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: SizedBox(
+                height: AppLayout.getHeight(50),
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: ((context) => PaymentCart()))),
+                  child: Text('Add To Cart'),
+                ),
+              ),
+            ),
+            Gap(20),
+          ],
+        ),
       ),
     );
   }

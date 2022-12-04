@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:grocery_app_2022/screens/user/product/product_card.dart';
 
 import '../../../controller/product_controller.dart';
+import '../../../controller/user_controller.dart';
 import '../../../styles/styles.dart';
 import '../../../controller/cart_controller.dart';
 
@@ -13,6 +14,7 @@ class CategoryProduct extends StatelessWidget {
   final String category;
   final cartController = Get.put(CartController());
   final productController = Get.put(ProductController());
+ 
 
   getCategory() {
     return productController.products

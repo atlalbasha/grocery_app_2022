@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:grocery_app_2022/controller/image_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicons/unicons.dart';
 import '../styles/app_layout.dart';
@@ -33,7 +35,9 @@ class BuildImage extends StatelessWidget {
                 child: imagePath == null
                     ? CircleAvatar(
                         backgroundImage: imageUrl == null
-                            ? AssetImage('assets/images/user.png')
+                            ? NetworkImage(
+                                    'http://clipart-library.com/images/8TEbenojc.jpg')
+                                as ImageProvider
                             : NetworkImage(imageUrl!) as ImageProvider,
                         radius: 150.0,
                       )

@@ -16,25 +16,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Obx(() => Test(c: c)),
-          FloatingActionButton(child: Icon(Icons.add), onPressed: c.increment),
-        ],
+        children: [],
       ),
     );
-  }
-}
-
-class Test extends StatelessWidget {
-  const Test({
-    Key? key,
-    required this.c,
-  }) : super(key: key);
-
-  final CartController c;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text("Clicks: ${c.count}");
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app_2022/models/product.dart';
 
+import '../models/order.dart';
 import '../models/user.dart';
 import '../styles/styles.dart';
 
@@ -23,9 +24,18 @@ class FirestoreDB {
 
   Future<void> addProduct({required Product product}) async {
     final productDoc = _firestore.collection('products').doc();
-    product.id = productDoc.id;
+    Product newProduct = Product(
+      id: productDoc.id,
+      title: product.title,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      description: product.description,
+      category: product.category,
+      discount: product.discount,
+      unit: product.unit,
+    );
 
-    await productDoc.set(product.toMap());
+    await productDoc.set(newProduct.toMap());
     Get.snackbar(
       'Added product',
       'product is added successfully!',
@@ -34,6 +44,29 @@ class FirestoreDB {
       colorText: Styles.whiteColor,
       duration: const Duration(seconds: 1),
     );
+  }
+
+  Future<void> updateProduct(Product product) async {
+    return await _firestore
+        .collection('products')
+        .doc(product.id)
+        .update(product.toMap());
+  }
+
+  Future<void> deleteProduct(String id) async {
+    await _firestore.collection('products').doc(id).delete();
+  }
+
+  Future<void> addOrder({required Order order}) async {
+    final orderDoc = _firestore.collection('orders').doc();
+    Order newOrder = Order(
+      id: orderDoc.id,
+      cart: order.cart,
+      total: order.total,
+      user: order.user,
+    );
+
+    await orderDoc.set(newOrder.toMap());
   }
 
   // Future<void> addNewUser(User user) async {

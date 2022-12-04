@@ -26,7 +26,7 @@ class AllProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        (() => Column(
+        (() => ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20),

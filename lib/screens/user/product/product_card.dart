@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:grocery_app_2022/controller/product_controller.dart';
 import 'package:grocery_app_2022/models/product.dart';
 import 'package:grocery_app_2022/controller/cart_controller.dart';
+import 'package:grocery_app_2022/screens/admin/upload_product_screen.dart';
 import 'package:grocery_app_2022/screens/user/product/product_details_screen.dart';
 import 'package:grocery_app_2022/styles/app_layout.dart';
 
+import '../../../controller/user_controller.dart';
 import '../../../styles/styles.dart';
 
 class ProductCard extends StatelessWidget {
@@ -18,8 +20,11 @@ class ProductCard extends StatelessWidget {
 
   final CartController cartController = Get.put(CartController());
 
+  UserController userController = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
+    print(userController.myUser.isAdmin);
     return InkWell(
       onTap: () {
         Get.to(() => ProductDetails(product: product));
@@ -92,18 +97,28 @@ class ProductCard extends StatelessWidget {
                     Text(
                       '${product.price.toString()}\$',
                       style: Styles.headLineStyle4.copyWith(
-                          decoration: TextDecoration.lineThrough,
+                          decoration: product.discount.isGreaterThan(0)
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
                           color: Styles.orangeColor),
                     ),
                     const Gap(4),
-                    Text('${product.discount.toString()}\$',
-                        style: Styles.headLineStyle4),
+                    Text(
+                      product.discount.isGreaterThan(0)
+                          ? '${(product.price - (product.price * product.discount / 100)).toStringAsFixed(2)}\$'
+                          : '',
+                      style: Styles.headLineStyle4,
+                    ),
                   ],
                 ),
                 InkWell(
                   onTap: () => {
-                    print('object'),
-                    cartController.addProduct(product),
+                    userController.myUser.isAdmin == true
+                        ? Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => UploadProductScreen(
+                                  product: product,
+                                )))
+                        : cartController.addProduct(product),
                   },
                   child: Container(
                     height: AppLayout.getHeight(30),
@@ -112,10 +127,9 @@ class ProductCard extends StatelessWidget {
                       color: Styles.orangeColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
+                    child: userController.myUser.isAdmin == true
+                        ? const Icon(Icons.edit, color: Colors.white)
+                        : const Icon(Icons.add, color: Colors.white),
                   ),
                 ),
               ],

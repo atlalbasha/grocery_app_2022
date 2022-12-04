@@ -22,7 +22,7 @@ class RolesToggle extends StatelessWidget {
         if (userController.myUser.isAdmin == true) {
           return const AdminPage();
         } else {
-          return const UserPage();
+          return UserPage();
         }
       }
     });

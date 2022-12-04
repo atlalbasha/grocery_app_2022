@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'components/profile_appbar.dart';
+import '../../../widgets/build_appbar.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -10,7 +10,7 @@ class Settings extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: const [
-          ProfileAppBar(title: 'Settings'),
+          BuildAppBar(title: 'Settings'),
         ],
       ),
     );

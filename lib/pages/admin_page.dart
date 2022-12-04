@@ -17,7 +17,7 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   static final List<Widget> _screens = [
     const HomeScreen(),
-    const UploadProductScreen(),
+    UploadProductScreen(),
   ];
   int _selectedIndex = 0;
 

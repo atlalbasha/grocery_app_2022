@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:grocery_app_2022/controller/cart_controller.dart';
+import 'package:grocery_app_2022/controller/order_controller.dart';
+import 'package:grocery_app_2022/controller/user_controller.dart';
+import 'package:grocery_app_2022/models/order.dart';
 
 import 'package:grocery_app_2022/styles/styles.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../styles/app_layout.dart';
 
-class PaymentCart extends StatefulWidget {
+class PaymentCart extends StatelessWidget {
   const PaymentCart({super.key});
 
   @override
-  State<PaymentCart> createState() => _PaymentState();
-}
-
-class _PaymentState extends State<PaymentCart> {
-  int selectedValue = 0;
-  @override
   Widget build(BuildContext context) {
+    int selectedValue = 0;
+    OrderController orderController = Get.put(OrderController());
+    UserController userController = Get.put(UserController());
+    CartController cartController = Get.put(CartController());
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: Column(children: [
@@ -88,8 +90,7 @@ class _PaymentState extends State<PaymentCart> {
                       title: Text('Pay via card', style: Styles.textStyle),
                       subtitle: Text('Visa or master card',
                           style: Styles.headLineStyle4),
-                      onChanged: (value) =>
-                          setState(() => selectedValue = value!),
+                      onChanged: (value) => selectedValue = value!,
                       secondary: Icon(UniconsLine.credit_card,
                           color: Styles.secondaryColor),
                     ),
@@ -100,8 +101,7 @@ class _PaymentState extends State<PaymentCart> {
                       title: Text('Cash on delivery', style: Styles.textStyle),
                       subtitle: Text('Pay cash at home',
                           style: Styles.headLineStyle4),
-                      onChanged: (value) =>
-                          setState(() => selectedValue = value!),
+                      onChanged: (value) => selectedValue = value!,
                       secondary:
                           Icon(UniconsLine.bill, color: Styles.secondaryColor),
                     ),
@@ -118,7 +118,11 @@ class _PaymentState extends State<PaymentCart> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => PaymentCart());
+                Order newOrder = Order(
+                    cart: cartController.myCart,
+                    user: userController.myUser.toMap(),
+                    total: double.parse(cartController.total));
+                orderController.addOrder(newOrder);
               },
               child: const Text('Confirm payment'),
             ),

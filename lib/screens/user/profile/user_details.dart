@@ -17,7 +17,7 @@ import '../../../controller/user_controller.dart';
 import '../../../styles/app_layout.dart';
 import '../../../styles/styles.dart';
 import '../../../widgets/build_image.dart';
-import 'components/profile_appbar.dart';
+import '../../../widgets/build_appbar.dart';
 
 class UserDetails extends StatelessWidget {
   UserDetails({super.key});
@@ -59,7 +59,7 @@ class UserDetails extends StatelessWidget {
     userController.getUser();
     return Scaffold(
       body: ListView(children: [
-        ProfileAppBar(title: 'Edit Profile'),
+        BuildAppBar(title: 'Edit Profile'),
         Obx(
           () => Padding(
             padding: const EdgeInsets.all(20),
