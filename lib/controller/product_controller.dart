@@ -31,6 +31,11 @@ class ProductController extends GetxController {
     products.bindStream(FirestoreDB().getAllProducts());
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
   void updateProuctPrice(Product product, double price) {
     product.price = price;
   }
@@ -62,30 +67,31 @@ class ProductController extends GetxController {
 
   Future updateProduct(Product product) async {
     _isLoading.value = true;
-    print(imageController.imagePath);
+
     try {
       Product updateProduct = Product(
           id: product.id,
           title:
-              newProduct['Title'] == '' ? product.title : newProduct['Title'],
-          price: newProduct['Price'] == ''
+              newProduct['Title'] == null ? product.title : newProduct['Title'],
+          price: newProduct['Price'] == null
               ? product.price
               : double.parse(newProduct['Price']),
-          category: newProduct['Category'] == ''
+          category: newProduct['Category'] == null
               ? product.category
               : newProduct['Category'],
-          description: newProduct['Description'] == ''
+          description: newProduct['Description'] == null
               ? product.description
               : newProduct['Description'],
-          discount: newProduct['Discount'] == ''
+          discount: newProduct['Discount'] == null
               ? product.discount
               : int.parse(newProduct['Discount']),
           imageUrl: imageController.image == null
               ? product.imageUrl
               : imageController.imagePath,
-          unit: newProduct['Unit'] == '' ? product.unit : newProduct['Unit']);
+          unit: newProduct['Unit'] == null ? product.unit : newProduct['Unit']);
 
       await FirestoreDB().updateProduct(updateProduct);
+      newProduct = {}.obs;
     } catch (e) {
       _isError.value = true;
       _errorMessage.value = e.toString();

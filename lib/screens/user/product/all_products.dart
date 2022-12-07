@@ -20,8 +20,6 @@ class AllProducts extends StatelessWidget {
   final cartController = Get.put(CartController());
   final productController = Get.put(ProductController());
 
-  void initState() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -119,9 +119,15 @@ class PaymentCart extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 Order newOrder = Order(
-                    cart: cartController.myCart,
-                    user: userController.myUser.toMap(),
-                    total: double.parse(cartController.total));
+                  cart: cartController.myCart,
+                  user: userController.myUser.toMap(),
+                  total: double.parse(cartController.total),
+                  status: 'pending',
+                  date: DateTime.now().toString(),
+                  paymentMethod: selectedValue == 1 ? 'card' : 'cash',
+                  paymentStatus: 'pending',
+                  deliveryStatus: 'Pending',
+                );
                 orderController.addOrder(newOrder);
               },
               child: const Text('Confirm payment'),

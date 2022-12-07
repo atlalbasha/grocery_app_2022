@@ -11,12 +11,19 @@ class OrderController extends GetxController {
   bool get isLoading => _isLoading.value;
   bool get isError => _isError.value;
   String get errorMessage => _errorMessage.value;
-  final orders = {}.obs;
+
+  var isOpen = false.obs;
+
+  final orders = <Order>[].obs;
+  List<Order> get productList => orders;
+
+  final newOrders = {}.obs;
   //List<Order> get orderList => orders;
   @override
   void onReady() {
-    //orders.bindStream(FirestoreDB().getAllOrders());
+    orders.bindStream(FirestoreDB().getAllOrders());
   }
+
   Future addOrder(Order order) async {
     _isLoading.value = true;
     try {

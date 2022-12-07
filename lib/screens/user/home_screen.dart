@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/components/search_bar/gf_search_bar.dart';
+import 'package:grocery_app_2022/controller/search_controller.dart';
 import 'package:grocery_app_2022/screens/user/product/all_products.dart';
 import 'package:grocery_app_2022/screens/user/product/fruits.dart';
 import 'package:grocery_app_2022/screens/user/product/category_product.dart';
+import 'package:grocery_app_2022/screens/user/product/search_product.dart';
 
 import '../../styles/app_layout.dart';
 import '../../styles/styles.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  
   @override
   Widget build(BuildContext context) {
+    SearchController searchController = Get.put(SearchController());
     return DefaultTabController(
       length: 6,
       child: Scaffold(
         appBar: AppBar(
-          title: const SearchBar(),
+          title: SearchBar(),
           bottom: TabBar(
             isScrollable: true,
             indicatorColor: Styles.orangeColor,
             indicatorSize: TabBarIndicatorSize.label,
             tabs: const [
-              Tab(
-                text: 'All',
-              ),
-              Tab(
-                text: 'Fruits',
-              ),
-              Tab(
-                text: 'Vegetables',
-              ),
-              Tab(
-                text: 'Drinks',
-              ),
-              Tab(
-                text: 'Bakery',
-              ),
-              Tab(
-                text: 'Other',
-              ),
+              Tab(text: 'All'),
+              Tab(text: 'Fruits'),
+              Tab(text: 'Vegetables'),
+              Tab(text: 'Drinks'),
+              Tab(text: 'Bakery'),
+              Tab(text: 'Other'),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            AllProducts(),
-            CategoryProduct(category: 'Fruits'),
-            CategoryProduct(category: 'Vegetables'),
-            CategoryProduct(category: 'Drinks'),
-            CategoryProduct(category: 'Bakery'),
-            CategoryProduct(category: 'Other'),
-          ],
+        body: Obx(
+          () => TabBarView(
+            children: [
+              searchController.searchText == ''
+                  ? AllProducts()
+                  : SearchProduct(),
+              searchController.searchText == ''
+                  ? CategoryProduct(category: 'Fruits')
+                  : SearchProduct(),
+              searchController.searchText == ''
+                  ? CategoryProduct(category: 'Vegetables')
+                  : SearchProduct(),
+              searchController.searchText == ''
+                  ? CategoryProduct(category: 'Drinks')
+                  : SearchProduct(),
+              searchController.searchText == ''
+                  ? CategoryProduct(category: 'Bakery')
+                  : SearchProduct(),
+              searchController.searchText == ''
+                  ? CategoryProduct(category: 'Other')
+                  : SearchProduct(),
+            ],
+          ),
         ),
       ),
     );
@@ -65,10 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({
+  SearchBar({
     Key? key,
   }) : super(key: key);
-
+  SearchController searchController = Get.put(SearchController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +79,9 @@ class SearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
-        onChanged: (value) => value,
+        onChanged: (value) => {
+          searchController.searchText = value,
+        },
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Search...',

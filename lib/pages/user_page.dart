@@ -25,7 +25,7 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   static final List<Widget> _screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const CategoryScreen(),
     const CartScreen(),
     const FavoritesScreen(),

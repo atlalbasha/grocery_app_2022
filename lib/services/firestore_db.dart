@@ -18,6 +18,36 @@ class FirestoreDB {
       query.docs.forEach((element) {
         retVal.add(Product.fromDocumentSnapshot(snapshot: element));
       });
+
+      return retVal;
+    });
+  }
+
+  Stream<List<Product>> getProductsByCategory(String category) {
+    return _firestore
+        .collection('products')
+        .where('category', isEqualTo: category)
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<Product> retVal = [];
+      query.docs.forEach((element) {
+        retVal.add(Product.fromDocumentSnapshot(snapshot: element));
+      });
+      return retVal;
+    });
+  }
+
+  Stream<List<Product>> searchProduct(String searchText) {
+    return _firestore
+        .collection('products')
+        .where('title', isEqualTo: searchText)
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<Product> retVal = [];
+      query.docs.forEach((element) {
+        retVal.add(Product.fromDocumentSnapshot(snapshot: element));
+      });
+
       return retVal;
     });
   }
@@ -64,11 +94,29 @@ class FirestoreDB {
       cart: order.cart,
       total: order.total,
       user: order.user,
+      date: order.date,
+      status: order.status,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
+      deliveryStatus: order.deliveryStatus,
     );
 
     await orderDoc.set(newOrder.toMap());
   }
 
+  Stream<List<Order>> getAllOrders() {
+    return _firestore
+        .collection('orders')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<Order> retVal = [];
+      query.docs.forEach((element) {
+        retVal.add(Order.fromDocumentSnapshot(snapshot: element));
+      });
+
+      return retVal;
+    });
+  }
   // Future<void> addNewUser(User user) async {
   // await _firestore
   //     .collection('users').doc(user.id).setData(user.toMap());

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:grocery_app_2022/screens/admin/upload_product_screen.dart';
+import 'package:unicons/unicons.dart';
 
 import '../screens/admin/admin_home_screen.dart';
+import '../screens/admin/orders_screen.dart';
 import '../screens/user/home_screen.dart';
 
 class AdminPage extends StatefulWidget {
@@ -16,8 +18,9 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   static final List<Widget> _screens = [
-    const HomeScreen(),
+    HomeScreen(),
     UploadProductScreen(),
+    OrdersScreen(),
   ];
   int _selectedIndex = 0;
 
@@ -51,6 +54,10 @@ class _AdminPageState extends State<AdminPage> {
               icon: Icon(Icons.cloud_upload_outlined),
               activeIcon: Icon(Icons.cloud_upload_rounded),
               label: 'upload'),
+          BottomNavigationBarItem(
+              icon: Icon(UniconsLine.clipboard_notes),
+              activeIcon: Icon(UniconsLine.clipboard_notes),
+              label: 'Orders'),
         ],
       ),
     );

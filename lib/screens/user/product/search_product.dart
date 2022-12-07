@@ -2,28 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:grocery_app_2022/controller/category_controller.dart';
+import 'package:grocery_app_2022/controller/search_controller.dart';
 import 'package:grocery_app_2022/screens/user/product/product_card.dart';
 
-import '../../../controller/product_controller.dart';
-import '../../../controller/user_controller.dart';
 import '../../../styles/styles.dart';
-import '../../../controller/cart_controller.dart';
 
-class CategoryProduct extends StatelessWidget {
-  CategoryProduct({super.key, required this.category});
-  final String category;
-
-  CategoryController categoryController = Get.put(CategoryController());
+class SearchProduct extends StatelessWidget {
+  SearchProduct({super.key});
+  SearchController searchController = Get.put(SearchController());
 
   @override
   Widget build(BuildContext context) {
-    categoryController.getProductsByCategory(category);
     return Scaffold(
       body: Obx(
         (() => Padding(
               padding: const EdgeInsets.all(20),
-              child: categoryController.products.isNotEmpty
+              child: searchController.products.isNotEmpty
                   ? GridView.count(
                       shrinkWrap: true,
                       crossAxisCount: 2,
@@ -31,10 +25,10 @@ class CategoryProduct extends StatelessWidget {
                       crossAxisSpacing: 20,
                       childAspectRatio: 1 / 1.3,
                       children: List.generate(
-                        categoryController.products.length,
+                        searchController.products.length,
                         (index) {
                           return ProductCard(
-                            product: categoryController.products[index],
+                            product: searchController.products[index],
                           );
                         },
                       ),
