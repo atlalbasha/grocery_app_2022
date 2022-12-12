@@ -21,7 +21,62 @@ class OrderController extends GetxController {
   //List<Order> get orderList => orders;
   @override
   void onReady() {
-    orders.bindStream(FirestoreDB().getAllOrders());
+    orders.bindStream(FirestoreDB().getOrdersByStatus('Pending'));
+  }
+
+  Future getOrdersByStatus(String status) async {
+    orders.bindStream(FirestoreDB().getOrdersByStatus(status));
+  }
+
+  Future deleteOrder(String id) async {
+    _isLoading.value = true;
+    try {
+      FirestoreDB().deleteOrder(id);
+    } catch (e) {
+      _isError.value = true;
+      _errorMessage.value = e.toString();
+    } finally {
+      _isLoading.value = false;
+      Get.snackbar(
+        'Deleted order',
+        'order is deleted successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Styles.orangeColor,
+        colorText: Styles.whiteColor,
+        duration: const Duration(seconds: 1),
+      );
+    }
+  }
+
+  Future updateOrder(Order order) async {
+    _isLoading.value = true;
+    try {
+      Order newOrder = Order(
+        id: order.id,
+        cart: order.cart,
+        user: order.user,
+        total: order.total,
+        status: order.status == 'preparing' ? 'shipping' : 'delivered',
+        date: order.date,
+        paymentMethod: order.paymentMethod,
+        paymentStatus: 'pending',
+        deliveryStatus: 'Pending',
+      );
+      FirestoreDB().updateOrder(newOrder);
+    } catch (e) {
+      _isError.value = true;
+      _errorMessage.value = e.toString();
+    } finally {
+      _isLoading.value = false;
+      Get.snackbar(
+        'Updated order',
+        'order is updated successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Styles.orangeColor,
+        colorText: Styles.whiteColor,
+        duration: const Duration(seconds: 1),
+      );
+    }
   }
 
   Future addOrder(Order order) async {

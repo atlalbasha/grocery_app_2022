@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,11 +12,13 @@ import '../../styles/app_layout.dart';
 import '../../styles/styles.dart';
 
 class OrdersStatus extends StatelessWidget {
-  const OrdersStatus({super.key});
+  const OrdersStatus({super.key, required this.status});
+  final String status;
 
   @override
   Widget build(BuildContext context) {
     OrderController orderController = Get.put(OrderController());
+    orderController.getOrdersByStatus(status);
     return Scaffold(
       body: Obx(
         () => Column(
@@ -53,7 +56,6 @@ class OrdersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(order.cart);
     return Obx(
       () => GFAccordion(
         onToggleCollapsed: (value) {
@@ -73,7 +75,7 @@ class OrdersList extends StatelessWidget {
               ),
         contentBorderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         titleChild: Column(
           children: [
             Row(
@@ -82,13 +84,17 @@ class OrdersList extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${order.cart!.length} Products'),
-                    Text('Total: ${order.total} USD'),
+                    Text('${order.cart!.length} Products',
+                        style: Styles.headLineStyle4),
+                    Text('Total: ${order.total} USD',
+                        style: Styles.headLineStyle4),
                   ],
                 ),
-                Column(children: [
-                  Text(order.date.toString()),
-                  Text(order.status.toString()),
+                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  Text(order.date.toString(), style: Styles.headLineStyle4),
+                  Text(order.status.toString(),
+                      style: Styles.headLineStyle4
+                          .copyWith(color: Styles.orangeColor)),
                 ]),
               ],
             ),
@@ -104,14 +110,15 @@ class OrdersList extends StatelessWidget {
                         Divider(color: Styles.primaryColor),
                     itemBuilder: ((_, index) {
                       return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Column(children: [
                             SizedBox(
                               width: 30,
                               height: 30,
                               child: Image.network(
-                                'http://clipart-library.com/images/8TEbenojc.jpg',
+                                order.cart![index]['product']['imageUrl']
+                                    .toString(),
                                 height: AppLayout.getHeight(50),
                                 width: AppLayout.getWidth(50),
                               ),
@@ -121,17 +128,100 @@ class OrdersList extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Text(order.cart![index].products[index]
-                                //     .toString()),
-                                Text('Quantity x Price'),
+                                Text(
+                                    order.cart![index]['product']['title']
+                                        .toString(),
+                                    style: Styles.headLineStyle4),
+                                Text(
+                                    '${order.cart![index]['quantity']} st * ${order.cart![index]['product']['price']}\$',
+                                    style: Styles.headLineStyle4),
                               ]),
                           Spacer(),
                           Column(children: [
-                            Text('Total Price : 200 USD'),
+                            Text(
+                                '${order.cart![index]['quantity'] * order.cart![index]['product']['price']}\$'
+                                    .toString(),
+                                style: Styles.headLineStyle4),
                           ]),
                         ],
                       );
                     }),
+                  ),
+                  Divider(color: Styles.primaryColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Customer name:', style: Styles.headLineStyle4),
+                      Text(
+                        order.user!['name'],
+                        style: Styles.headLineStyle4,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Mobile:', style: Styles.headLineStyle4),
+                      Text(order.user!['phone'], style: Styles.headLineStyle4),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Shipping address:', style: Styles.headLineStyle4),
+                      Text(order.user!['address'],
+                          style: Styles.headLineStyle4),
+                    ],
+                  ),
+                  Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      order.status != 'delivered'
+                          ? RichText(
+                              text: TextSpan(
+                              style: Styles.headLineStyle4,
+                              text: order.status == 'preparing'
+                                  ? 'Confirm the order: '
+                                  : 'Delivered order: ',
+                              children: [
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      orderController.updateOrder(order);
+                                    },
+                                  text: 'Confirm',
+                                  style: Styles.headLineStyle4.copyWith(
+                                      decoration: TextDecoration.underline,
+                                      color: Styles.orangeColor),
+                                ),
+                              ],
+                            ))
+                          : Text('Delivered order',
+                              style: Styles.headLineStyle4),
+                    ],
+                  ),
+                  Gap(10),
+                  Row(
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                        style: Styles.headLineStyle4,
+                        text: 'Cancel & Delete the order: ',
+                        children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                orderController.deleteOrder(order.id!);
+                              },
+                            text: 'Cancel ',
+                            style: Styles.headLineStyle4.copyWith(
+                                decoration: TextDecoration.underline,
+                                color: Styles.orangeColor),
+                          ),
+                        ],
+                      )),
+                    ],
                   ),
                 ],
               )

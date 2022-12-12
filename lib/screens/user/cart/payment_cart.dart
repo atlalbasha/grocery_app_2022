@@ -122,7 +122,7 @@ class PaymentCart extends StatelessWidget {
                   cart: cartController.myCart,
                   user: userController.myUser.toMap(),
                   total: double.parse(cartController.total),
-                  status: 'pending',
+                  status: 'preparing',
                   date: DateTime.now().toString(),
                   paymentMethod: selectedValue == 1 ? 'card' : 'cash',
                   paymentStatus: 'pending',

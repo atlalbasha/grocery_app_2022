@@ -41,9 +41,9 @@ class OrdersScreen extends StatelessWidget {
               const Expanded(
                   child: TabBarView(
                 children: [
-                  OrdersStatus(),
-                  OrdersStatus(),
-                  OrdersStatus(),
+                  OrdersStatus(status: 'preparing'),
+                  OrdersStatus(status: 'shipping'),
+                  OrdersStatus(status: 'delivered'),
                 ],
               ))
             ],

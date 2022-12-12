@@ -11,6 +11,7 @@ class Product {
   late String unit;
   late String description;
   late String imageUrl;
+  late int? quantity;
 
   Product({
     this.id,
@@ -21,8 +22,9 @@ class Product {
     required this.unit,
     required this.description,
     required this.imageUrl,
+    this.quantity,
   });
-  RxInt quantity = 1.obs;
+  // RxInt quantity = 1.obs;
 
   Product.fromDocumentSnapshot({required DocumentSnapshot snapshot}) {
     id = snapshot.id;
@@ -33,6 +35,7 @@ class Product {
     unit = snapshot['unit'];
     description = snapshot['description'];
     imageUrl = snapshot['imageUrl'];
+    quantity = snapshot['quantity'];
   }
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -43,6 +46,7 @@ class Product {
         'unit': unit,
         'description': description,
         'imageUrl': imageUrl,
+        'quantity': quantity,
       };
 
   // static Product fromSnapshot(DocumentSnapshot documentSnapshot) {
