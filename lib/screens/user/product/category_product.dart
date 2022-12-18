@@ -14,7 +14,7 @@ class CategoryProduct extends StatelessWidget {
   CategoryProduct({super.key, required this.category});
   final String category;
 
-  CategoryController categoryController = Get.put(CategoryController());
+  CategoryController categoryController = Get.find();
 
   @override
   Widget build(BuildContext context) {

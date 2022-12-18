@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/components/search_bar/gf_search_bar.dart';
 import 'package:grocery_app_2022/controller/search_controller.dart';
 import 'package:grocery_app_2022/screens/user/product/all_products.dart';
-import 'package:grocery_app_2022/screens/user/product/fruits.dart';
+
 import 'package:grocery_app_2022/screens/user/product/category_product.dart';
 import 'package:grocery_app_2022/screens/user/product/search_product.dart';
 

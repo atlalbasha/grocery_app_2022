@@ -11,6 +11,7 @@ class Product {
   late String unit;
   late String description;
   late String imageUrl;
+  late bool availableInStock;
   late int? quantity;
 
   Product({
@@ -23,8 +24,8 @@ class Product {
     required this.description,
     required this.imageUrl,
     this.quantity,
+    required this.availableInStock,
   });
-  // RxInt quantity = 1.obs;
 
   Product.fromDocumentSnapshot({required DocumentSnapshot snapshot}) {
     id = snapshot.id;
@@ -36,6 +37,19 @@ class Product {
     description = snapshot['description'];
     imageUrl = snapshot['imageUrl'];
     quantity = snapshot['quantity'];
+    availableInStock = snapshot['availableInStock'];
+  }
+  Product.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    title = map['title'];
+    price = map['price'];
+    discount = map['discount'];
+    category = map['category'];
+    unit = map['unit'];
+    description = map['description'];
+    imageUrl = map['imageUrl'];
+    quantity = map['quantity'];
+    availableInStock = map['availableInStock'];
   }
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -47,64 +61,6 @@ class Product {
         'description': description,
         'imageUrl': imageUrl,
         'quantity': quantity,
+        'availableInStock': availableInStock,
       };
-
-  // static Product fromSnapshot(DocumentSnapshot documentSnapshot) {
-  //   Product product = Product(
-  //       quantity: documentSnapshot['quantity'],
-  //       title: documentSnapshot['title'],
-  //       price: documentSnapshot['price'],
-  //       discount: documentSnapshot['discount'],
-  //       category: documentSnapshot['category'],
-  //       unit: documentSnapshot['unit'],
-  //       description: documentSnapshot['description'],
-  //       imageUrl: documentSnapshot['imageUrl']);
-  //   return product;
-  // }
 }
-
-
-
-  // static Product formJson(Map<String, dynamic> json) => Product(
-  //     id: json['uid'],
-  //     title: json['title'],
-  //     price: json['price'],
-  //     discount: json['discount'],
-  //     category: json['category'],
-  //     unit: json['unit'],
-  //     description: json['description'],
-  //     imageUrl: json['imageUrl'],
-  //     quantity: json['quantity']);
-
-
-
-  // static List<Product> products = [
-  //   Product(
-  //       id: '1',
-  //       title: 'Apple',
-  //       price: 100,
-  //       discount: 10,
-  //       category: 'Fruits',
-  //       unit: '1kg',
-  //       description: 'Fresh Apple',
-  //       imageUrl: 'http://clipart-library.com/images/8TEbenojc.jpg'),
-  //   Product(
-  //       id: '2',
-  //       title: 'Banana',
-  //       price: 50,
-  //       discount: 5,
-  //       category: 'Fruits',
-  //       unit: '1kg',
-  //       description: 'Fresh Banana',
-  //       imageUrl: 'http://clipart-library.com/images/8TAbqxzpc.jpg'),
-  //   Product(
-  //       id: '3',
-  //       title: 'Orange',
-  //       price: 100,
-  //       discount: 10,
-  //       category: 'Fruits',
-  //       unit: '1kg',
-  //       description: 'Fresh Orange',
-  //       imageUrl:
-  //           'http://clipart-library.com/image_gallery2/Orange-PNG-Picture.png'),
-  // ];

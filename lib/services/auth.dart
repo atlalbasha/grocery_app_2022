@@ -10,7 +10,7 @@ class Auth {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.put(UserController());
 
   get authStateChanges => _auth.authStateChanges();
 

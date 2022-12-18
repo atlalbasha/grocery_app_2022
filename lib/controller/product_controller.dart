@@ -18,43 +18,101 @@ class ProductController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final products = <Product>[].obs;
   List<Product> get productList => products;
+
   var newProduct = {}.obs;
+  // Map<dynamic, dynamic> get newProduct => _newProduct
+  //     .map((key, value) => MapEntry(key.toString(), value.toString()));
+  // set newProduct(newProduct) {
+  //   _newProduct.value = newProduct;
+  // }
 
-  List<String> category = ['Fruits', 'Vegetables', 'Drinks', 'Other'];
-  String? selectedCategory = 'Fruits';
+  // Category
+  List<String> category = [
+    'Select Category',
+    'Fruits',
+    'Vegetables',
+    'Drinks',
+    'Bakery',
+    'Other'
+  ];
+  final _selectedCategory = 'Fruits'.obs;
+  String get selectedCategory => _selectedCategory.value;
+  set selectedCategory(String value) {
+    _selectedCategory.value = value;
+    newProduct.update('category', (_) => value, ifAbsent: () => value);
+  }
 
-  List<String> units = ['1kg', '1pcs'];
-  String? selectedUnits = '1kg';
+  // Available in Stock
+  final _availableInStock = 1.obs;
+  int get availableInStock => _availableInStock.value;
+  set availableInStock(int value) {
+    _availableInStock.value = value;
+    newProduct.update('availableInStock', (_) => value == 1 ? true : false,
+        ifAbsent: () => value == 1 ? true : false);
+    print(newProduct);
+  }
+
+  // Selected Unit
+  final _selectedUnits = 1.obs;
+  int get selectedUnits => _selectedUnits.value;
+  set selectedUnits(int value) {
+    _selectedUnits.value = value;
+    newProduct.update('unit', (_) => value == 1 ? '1kg' : '1pcs',
+        ifAbsent: () => value == 1 ? '1kg' : '1pcs');
+    print(newProduct);
+  }
 
   @override
   void onReady() {
+    newProduct.update('category', (_) => selectedCategory,
+        ifAbsent: () => selectedCategory);
+    newProduct.update('unit', (_) => selectedUnits == 1 ? '1kg' : '1pcs',
+        ifAbsent: () => selectedUnits == 1 ? '1kg' : '1pcs');
+    newProduct.update(
+        'availableInStock', (_) => availableInStock == 1 ? true : false,
+        ifAbsent: () => availableInStock == 1 ? true : false);
+
     products.bindStream(FirestoreDB().getAllProducts());
+    print(newProduct);
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    onClose();
+    super.onInit();
   }
 
   @override
   void onClose() {
+    print(newProduct);
+    newProduct = {}.obs;
+    print(newProduct);
     super.onClose();
   }
 
-  void updateProuctPrice(Product product, double price) {
+  void updateProductPrice(Product product, double price) {
     product.price = price;
   }
 
   Future uploadProduct() async {
     _isLoading.value = true;
-
+    print(newProduct);
     try {
       if (formKey.currentState!.validate()) {
         Product product = Product(
           id: '',
           title: newProduct['Title'],
           price: double.parse(newProduct['Price']),
-          category: newProduct['Category'],
           description: newProduct['Description'],
           discount: int.parse(newProduct['Discount']),
           imageUrl: imageController.imagePath,
-          unit: newProduct['Unit'],
+          category: newProduct['category'],
+          unit: newProduct['unit'],
+          quantity: newProduct['quantity'] = 1,
+          availableInStock: newProduct['availableInStock'],
         );
+
         await FirestoreDB().addProduct(product: product);
       }
     } catch (e) {
@@ -66,30 +124,29 @@ class ProductController extends GetxController {
   }
 
   Future updateProduct(Product product) async {
-    _isLoading.value = true;
+    // _isLoading.value = true;
 
+    print(newProduct);
     try {
       Product updateProduct = Product(
-          id: product.id,
-          title:
-              newProduct['Title'] == null ? product.title : newProduct['Title'],
-          price: newProduct['Price'] == null
-              ? product.price
-              : double.parse(newProduct['Price']),
-          category: newProduct['Category'] == null
-              ? product.category
-              : newProduct['Category'],
-          description: newProduct['Description'] == null
-              ? product.description
-              : newProduct['Description'],
-          discount: newProduct['Discount'] == null
-              ? product.discount
-              : int.parse(newProduct['Discount']),
-          imageUrl: imageController.image == null
-              ? product.imageUrl
-              : imageController.imagePath,
-          unit: newProduct['Unit'] == null ? product.unit : newProduct['Unit']);
-
+        id: product.id,
+        title: newProduct['Title'] ?? product.title,
+        price: newProduct['Price'] == null
+            ? product.price
+            : double.parse(newProduct['Price']),
+        description: newProduct['Description'] ?? product.description,
+        discount: newProduct['Discount'] == null
+            ? product.discount
+            : int.parse(newProduct['Discount']),
+        imageUrl: imageController.image == null
+            ? product.imageUrl
+            : imageController.imagePath,
+        category: newProduct['category'] ?? product.category,
+        unit: newProduct['unit'],
+        quantity: newProduct['quantity'] = 1,
+        availableInStock: newProduct['availableInStock'],
+      );
+      print(updateProduct);
       await FirestoreDB().updateProduct(updateProduct);
       newProduct = {}.obs;
     } catch (e) {

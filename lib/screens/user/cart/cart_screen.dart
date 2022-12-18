@@ -15,10 +15,10 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.find();
+    final CartController cartController = Get.put(CartController());
     return Scaffold(
         body: Obx(
-      () => cartController.products.length > 0
+      () => cartController.cartList.isNotEmpty
           ? Column(
               children: [
                 Expanded(
@@ -31,10 +31,10 @@ class CartScreen extends StatelessWidget {
                         crossAxisSpacing: 20,
                         childAspectRatio: 4,
                         children: List.generate(
-                          cartController.products.length,
+                          cartController.cartList.length,
                           (index) {
                             return CartCard(
-                              product: cartController.products[index],
+                              product: cartController.cartList[index],
                             );
                           },
                         ),

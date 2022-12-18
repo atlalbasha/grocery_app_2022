@@ -6,6 +6,8 @@ import 'package:grocery_app_2022/authentication/auth_toggle.dart';
 import 'package:grocery_app_2022/pages/roles_toggle.dart';
 import 'package:grocery_app_2022/styles/styles.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:grocery_app_2022/utils/home_bindings.dart';
+import 'utils/app_routes.dart';
 import 'controller/user_controller.dart';
 import 'firebase_options.dart';
 
@@ -15,9 +17,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    const GetMaterialApp(
-      home: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.put(UserController());
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         scaffoldBackgroundColor: Styles.bgColor,
@@ -44,6 +44,9 @@ class MyApp extends StatelessWidget {
           }
         }),
       ),
+      // initialRoute: '/authToggle',
+      getPages: appRoutes(),
+      initialBinding: HomeBindings(),
     );
   }
 }

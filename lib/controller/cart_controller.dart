@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:grocery_app_2022/models/product.dart';
 
 import '../models/cart.dart';
+import '../services/firestore_db.dart';
 import '../styles/styles.dart';
 
 class CartController extends GetxController {
@@ -12,26 +13,18 @@ class CartController extends GetxController {
   final dynamic _products = [].obs;
   var shippingFee = 20.00;
 
-  get products => _products;
+  final products = <Product>[].obs;
+  List<Product> get cartList => products;
 
-  void addProduct(Product product) {
-    int quantity = 1;
-    Cart newCart = Cart();
-    if (_products.contains(product)) {
-      product.quantity++;
-      quantity++;
-      _cart.forEach((element) {
-        if (element.product!['id'] == product.id) {
-          element.quantity = element.quantity! + 1;
-        }
-      });
-    } else {
-      _products.add(product);
-      newCart = Cart(product: product.toMap(), quantity: quantity);
-      _cart.add(newCart);
-    }
+  @override
+  void onReady() {
+    products.bindStream(FirestoreDB().getCart());
+  }
 
-    if (product.quantity.value > 1) return;
+  Future addProduct(Product product) async {
+    await FirestoreDB().addToCart(product);
+
+    if (product.quantity! > 1) return;
     Get.snackbar(
       'Added to cart',
       '${product.title} added to cart',
@@ -42,16 +35,10 @@ class CartController extends GetxController {
     );
   }
 
-  void removeProduct(Product product) {
-    if (_products.contains(product)) {
-      product.quantity.value--;
-      _cart.forEach((element) {
-        if (element.product!['id'] == product.id) {
-          element.quantity = element.quantity! - 1;
-        }
-      });
-    }
-    if (product.quantity.value < 1) {
+  Future removeProduct(Product product) async {
+    await FirestoreDB().deleteFromCart(product);
+
+    if (product.quantity! < 1) {
       _products.remove(product);
       Get.snackbar(
         'Removed from cart',
@@ -64,15 +51,14 @@ class CartController extends GetxController {
     }
   }
 
-  get subTotal => _products
-      .map((e) => (e.price - (e.price * e.discount / 100)) * e.quantity.value)
+  get subTotal => cartList
+      .map((e) => (e.price - (e.price * e.discount / 100)) * e.quantity!)
       .reduce((a, b) => a + b)
       .toStringAsFixed(2);
 
   get total {
-    var total = _products
-            .map((e) =>
-                (e.price - (e.price * e.discount / 100)) * e.quantity.value)
+    var total = cartList
+            .map((e) => (e.price - (e.price * e.discount / 100)) * e.quantity!)
             .reduce((a, b) => a + b) +
         shippingFee;
     return total.toStringAsFixed(2);

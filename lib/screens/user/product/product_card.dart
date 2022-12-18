@@ -18,8 +18,7 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
   final Product product;
 
-  final CartController cartController = Get.put(CartController());
-
+  CartController cartController = Get.find();
   UserController userController = Get.put(UserController());
 
   @override

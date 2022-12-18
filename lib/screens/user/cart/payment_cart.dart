@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,7 @@ class PaymentCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int selectedValue = 0;
+
     OrderController orderController = Get.put(OrderController());
     UserController userController = Get.put(UserController());
     CartController cartController = Get.put(CartController());
@@ -119,7 +122,7 @@ class PaymentCart extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 Order newOrder = Order(
-                  cart: cartController.myCart,
+                  cart: cartController.cartList,
                   user: userController.myUser.toMap(),
                   total: double.parse(cartController.total),
                   status: 'preparing',

@@ -10,146 +10,160 @@ import '../../../styles/styles.dart';
 import '../../../widgets/build_appbar.dart';
 import '../cart/payment_cart.dart';
 
-class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key, required this.product});
+class ProductDetails extends StatelessWidget {
+  ProductDetails({super.key, required this.product});
   final Product product;
 
-  @override
-  State<ProductDetails> createState() => _ProductDetailsState();
-}
-
-class _ProductDetailsState extends State<ProductDetails> {
   double rating = 3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            BuildAppBar(title: 'Product Details'),
-            Center(
-              child: SizedBox(
-                height: AppLayout.getHeight(300),
-                width: AppLayout.getHeight(300),
-                child: Hero(
-                  transitionOnUserGestures: true,
-                  tag: widget.product,
-                  child: Image.network(widget.product.imageUrl),
+      body: ListView(
+        children: [
+          const BuildAppBar(title: 'Product Details'),
+          Center(
+            child: SizedBox(
+              // height: AppLayout.getHeight(300),
+              // width: AppLayout.getHeight(300),
+              child: Hero(
+                transitionOnUserGestures: true,
+                tag: product,
+                child: AspectRatio(
+                  aspectRatio: 1.1,
+                  child: ClipPath(
+                    clipper: MyClipper(),
+                    child: Container(
+                      height: AppLayout.getHeight(350),
+                      // color: Styles.whiteColor,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.white,
+                            Styles.whiteColor,
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(50),
+                        child: Image.network(product.imageUrl),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('title', style: Styles.headLineStyle2),
-                        Text('Available in stock',
-                            style: Styles.headLineStyle4),
-                      ],
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      color: Colors.deepOrangeAccent,
-                      icon: Icon(Icons.favorite_border),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Styles.orangeColor,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: const Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Styles.whiteColor),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    '1',
-                    style: Styles.headLineStyle2,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Styles.orangeColor,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Text('22', style: Styles.headLineStyle2)
-              ],
-            ),
-            Divider(color: Colors.blueGrey),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Item Description'),
-                  SizedBox(height: 8),
-                  Text(
-                      'Et non aliquip in consequat nulla velit minim et. Lorem commodo cillum cupidatat in Lorem. Tempor veniam amet nostrud ex minim officia occaecat culpa mollit tempor ipsum id duis. Cillum sunt pariatur esse ad et amet nostrud velit eu ullamco veniam amet veniam.'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(product.title, style: Styles.headLineStyle2),
+                      Text('Available in stock', style: Styles.headLineStyle4),
+                    ],
+                  )
                 ],
               ),
-            ),
-            GFRating(
-              color: Styles.orangeColor,
-              borderColor: Styles.orangeColor,
-              value: rating,
-              onChanged: (value) {
-                setState(() {
-                  rating = value;
-                });
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                height: AppLayout.getHeight(50),
-                child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: ((context) => PaymentCart()))),
-                  child: Text('Add To Cart'),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    color: Colors.deepOrangeAccent,
+                    icon: Icon(Icons.favorite_border),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Styles.orangeColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: const Icon(
+                    Icons.remove,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Styles.whiteColor),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  product.quantity.toString(),
+                  style: Styles.headLineStyle2,
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Styles.orangeColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Spacer(),
+              Text(product.price.toString(), style: Styles.headLineStyle2)
+            ],
+          ),
+          Divider(color: Colors.blueGrey),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Product Description'),
+                SizedBox(height: 8),
+                Text(product.description),
+              ],
             ),
-            Gap(20),
-          ],
-        ),
+          ),
+          GFRating(
+            color: Styles.orangeColor,
+            borderColor: Styles.orangeColor,
+            value: rating,
+            onChanged: (value) {
+              // setState(() {
+              //   rating = value;
+              // });
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: SizedBox(
+              height: AppLayout.getHeight(50),
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: ((context) => PaymentCart()))),
+                child: Text('Add To Cart'),
+              ),
+            ),
+          ),
+          Gap(20),
+        ],
       ),
     );
   }

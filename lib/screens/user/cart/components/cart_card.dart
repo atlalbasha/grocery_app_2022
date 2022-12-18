@@ -88,11 +88,9 @@ class CartCard extends StatelessWidget {
                       border: Border.all(color: Styles.whiteColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Obx(
-                      () => Text(
-                        product.quantity.toString(),
-                        style: Styles.headLineStyle2,
-                      ),
+                    child: Text(
+                      product.quantity.toString(),
+                      style: Styles.headLineStyle2,
                     ),
                   ),
                   InkWell(

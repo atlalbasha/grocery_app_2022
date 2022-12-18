@@ -9,7 +9,7 @@ import '../../../styles/styles.dart';
 
 class SearchProduct extends StatelessWidget {
   SearchProduct({super.key});
-  SearchController searchController = Get.put(SearchController());
+  SearchController searchController = Get.find();
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/dropdown/gf_dropdown.dart';
 import 'package:grocery_app_2022/controller/product_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicons/unicons.dart';
@@ -19,13 +20,14 @@ class UploadProductScreen extends StatelessWidget {
   UploadProductScreen({super.key, this.product});
   final dynamic product;
 
-  ProductController productController = Get.put(ProductController());
-  ImageController imageController = Get.put(ImageController());
+  ProductController productController = Get.find();
+  ImageController imageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    int selectedValue = 0;
     imageController.image = null;
-    print(product);
+
     return Scaffold(
       body: GestureDetector(
         onTap: (() => FocusScope.of(context).requestFocus(FocusNode())),
@@ -89,13 +91,14 @@ class UploadProductScreen extends StatelessWidget {
                             Icon(UniconsLine.apps, color: Styles.orangeColor),
                       ),
                       onChanged: (value) => {
-                            productController.newProduct.update(
-                                'Category', (_) => value,
-                                ifAbsent: () => value)
+                            productController.selectedCategory =
+                                value.toString(),
                           },
-                      value: productController.selectedCategory,
+                      value: productController.category.isNotEmpty
+                          ? productController.category[0]
+                          : productController.selectedCategory,
                       items: productController.category
-                          .map((item) => DropdownMenuItem<String>(
+                          .map((item) => DropdownMenuItem(
                                 value: item,
                                 child: Text(
                                   item,
@@ -103,25 +106,68 @@ class UploadProductScreen extends StatelessWidget {
                               ))
                           .toList()),
                   const Gap(10),
-                  DropdownButtonFormField(
-                      decoration: Styles.dropdownDecoration.copyWith(
-                        prefixIcon:
-                            Icon(UniconsLine.weight, color: Styles.orangeColor),
-                      ),
-                      onChanged: (value) => {
-                            productController.newProduct.update(
-                                'Unit', (_) => value,
-                                ifAbsent: () => value)
-                          },
-                      value: productController.selectedUnits,
-                      items: productController.units
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                ),
-                              ))
-                          .toList()),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        RadioListTile(
+                            activeColor: Styles.orangeColor,
+                            value: 1,
+                            groupValue: productController.selectedUnits,
+                            title: Text('1 kg', style: Styles.textStyle),
+                            subtitle: Text('Product weight in kilograms',
+                                style: Styles.headLineStyle4),
+                            onChanged: (value) => {
+                                  productController.selectedUnits = value!,
+                                }),
+                        RadioListTile(
+                            activeColor: Styles.orangeColor,
+                            value: 2,
+                            groupValue: productController.selectedUnits,
+                            title: Text('1 pcs', style: Styles.textStyle),
+                            subtitle: Text('Product weight in pieces',
+                                style: Styles.headLineStyle4),
+                            onChanged: (value) => {
+                                  productController.selectedUnits = value!,
+                                }),
+                      ],
+                    ),
+                  ),
+                  const Gap(10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        RadioListTile(
+                          activeColor: Styles.orangeColor,
+                          value: 1,
+                          groupValue: productController.availableInStock,
+                          title: Text('Available in stock',
+                              style: Styles.textStyle),
+                          subtitle: Text('Product available in stock',
+                              style: Styles.headLineStyle4),
+                          onChanged: (value) =>
+                              productController.availableInStock = value!,
+                        ),
+                        RadioListTile(
+                          activeColor: Styles.orangeColor,
+                          value: 2,
+                          groupValue: productController.availableInStock,
+                          title: Text('Out of stock', style: Styles.textStyle),
+                          subtitle: Text('Product out of stock',
+                              style: Styles.headLineStyle4),
+                          onChanged: (value) =>
+                              productController.availableInStock = value!,
+                        ),
+                      ],
+                    ),
+                  ),
                   const Gap(10),
                   TextFormField(
                     validator: (value) => value!.isEmpty

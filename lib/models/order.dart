@@ -7,13 +7,11 @@ import 'package:grocery_app_2022/models/user.dart';
 
 class Order {
   late String? id;
-  late List<dynamic>? cart;
-  late List<Product>? x;
+  late List<Product>? cart;
   late Map<String, dynamic>? user;
   late double? total;
   late String? status;
   late String? date;
-
   late String? paymentMethod;
   late String? paymentStatus;
   late String? deliveryStatus;
@@ -31,7 +29,9 @@ class Order {
   });
   Order.fromDocumentSnapshot({required DocumentSnapshot snapshot}) {
     id = snapshot.id;
-    cart = snapshot['products'].cast<Map<String, dynamic>>();
+    cart = snapshot['products'] == null
+        ? []
+        : snapshot['products'].map<Product>((e) => Product.fromMap(e)).toList();
     user = snapshot['user'];
     total = snapshot['total'];
     status = snapshot['status'];
@@ -42,7 +42,7 @@ class Order {
   }
   Map<String, dynamic> toMap() => {
         'id': id,
-        'products': cart,
+        'products': cart == null ? [] : cart!.map((e) => e.toMap()).toList(),
         'user': user,
         'total': total,
         'status': status,

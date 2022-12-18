@@ -17,7 +17,7 @@ class OrdersStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OrderController orderController = Get.put(OrderController());
+    OrderController orderController = Get.find();
     orderController.getOrdersByStatus(status);
     return Scaffold(
       body: Obx(
@@ -117,8 +117,7 @@ class OrdersList extends StatelessWidget {
                               width: 30,
                               height: 30,
                               child: Image.network(
-                                order.cart![index]['product']['imageUrl']
-                                    .toString(),
+                                order.cart![index].imageUrl.toString(),
                                 height: AppLayout.getHeight(50),
                                 width: AppLayout.getWidth(50),
                               ),
@@ -128,18 +127,16 @@ class OrdersList extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    order.cart![index]['product']['title']
-                                        .toString(),
+                                Text(order.cart![index].title.toString(),
                                     style: Styles.headLineStyle4),
                                 Text(
-                                    '${order.cart![index]['quantity']} st * ${order.cart![index]['product']['price']}\$',
+                                    '${order.cart![index].quantity} st * ${order.cart![index].price}\$',
                                     style: Styles.headLineStyle4),
                               ]),
                           Spacer(),
                           Column(children: [
                             Text(
-                                '${order.cart![index]['quantity'] * order.cart![index]['product']['price']}\$'
+                                '${order.cart![index].quantity! * order.cart![index].price}\$'
                                     .toString(),
                                 style: Styles.headLineStyle4),
                           ]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:unicons/unicons.dart';
 
 import '../styles/styles.dart';
@@ -16,7 +17,7 @@ class BuildAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: () => Navigator.pop(context),
+          onTap: () => Get.back(),
           child: Container(
             child: Icon(
               UniconsLine.angle_left_b,

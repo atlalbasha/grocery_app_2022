@@ -17,8 +17,8 @@ class AllProducts extends StatelessWidget {
     super.key,
   });
 
-  final cartController = Get.put(CartController());
-  final productController = Get.put(ProductController());
+  CartController cartController = Get.find();
+  ProductController productController = Get.find();
 
   @override
   Widget build(BuildContext context) {
