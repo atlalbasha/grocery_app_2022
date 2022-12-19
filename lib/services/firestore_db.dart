@@ -42,7 +42,7 @@ class FirestoreDB {
   Stream<List<Product>> searchProduct(String searchText) {
     return _firestore
         .collection('products')
-        .where('title', isEqualTo: searchText)
+        .where('title', isGreaterThanOrEqualTo: searchText.toUpperCase())
         .snapshots()
         .map((QuerySnapshot query) {
       List<Product> retVal = [];
@@ -207,7 +207,7 @@ class FirestoreDB {
         if (documentSnapshot.exists) {
           documentSnapshot['quantity'];
           dynamic data = documentSnapshot.data();
-          if (data['quantity'] == 0) {
+          if (data['quantity'] == 1) {
             userDoc.doc(uid).collection('cart').doc(product.id).delete();
           } else {
             userDoc
@@ -244,26 +244,73 @@ class FirestoreDB {
       return retVal;
     });
   }
-  // Future<void> addNewUser(User user) async {
-  // await _firestore
-  //     .collection('users').doc(user.id).setData(user.toMap());
-  // }
 
-  // Future<void> updateUser(User user) async {
-  //   await _db.collection('users').document(user.id).updateData(user.toMap());
-  // }
+  // favorites
+  Future addToFavorite(product) async {
+    String uid = _userController.myUser.uid.toString();
+    CollectionReference userDoc =
+        FirebaseFirestore.instance.collection('users');
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .doc(product.id)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          userDoc.doc(uid).collection('favorite').doc(product.id).delete();
+        } else {
+          userDoc
+              .doc(uid)
+              .collection('favorite')
+              .doc(product.id)
+              .set(product.toMap());
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
-  // Future<void> deleteUser(User user) async {
-  //   await _db.collection('users').document(user.id).delete();
-  // }
+  Future isFavorite(product) async {
+    String uid = _userController.myUser.uid.toString();
+    CollectionReference userDoc =
+        FirebaseFirestore.instance.collection('users');
+    try {
+      bool result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('favorite')
+          .doc(product.id)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      return result;
+    } catch (e) {
+      print(e);
+    }
+  }
 
-  // Future<User> getUser(String id) async {
-  //   var snapshot = await _db.collection('users').document(id).get();
-  //   return User.fromMap(snapshot.data);
-  // }
+  Stream<List<Product>> getFavorites() {
+    String uid = _userController.userFirebase!.uid.toString();
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('favorite')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      List<Product> retVal = [];
+      query.docs.forEach((element) {
+        retVal.add(Product.fromDocumentSnapshot(snapshot: element));
+      });
 
-  // Future<List<User>> getAllUsers() async {
-  //   var snapshot = await _db.collection('users').getDocuments();
-  //   return snapshot.documents.map((doc) => User.fromMap(doc.data)).toList();
-  // }
+      return retVal;
+    });
+  }
 }

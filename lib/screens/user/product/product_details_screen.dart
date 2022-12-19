@@ -41,8 +41,9 @@ class ProductDetails extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Colors.white,
                             Styles.whiteColor,
+                            Styles.whiteColor,
+                            // Styles.orangeColor,
                           ],
                         ),
                       ),
@@ -65,7 +66,11 @@ class ProductDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(product.title, style: Styles.headLineStyle2),
-                      Text('Available in stock', style: Styles.headLineStyle4),
+                      Text(
+                          product.availableInStock
+                              ? 'Available in stock'
+                              : 'Out of stock',
+                          style: Styles.headLineStyle4),
                     ],
                   )
                 ],

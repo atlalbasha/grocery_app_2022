@@ -28,7 +28,7 @@ class _UserPageState extends State<UserPage> {
     HomeScreen(),
     const CategoryScreen(),
     const CartScreen(),
-    const FavoritesScreen(),
+    FavoritesScreen(),
     ProfileScreen(),
   ];
   int _selectedIndex = 0;

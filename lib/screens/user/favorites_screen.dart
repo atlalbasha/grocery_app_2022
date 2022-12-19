@@ -2,55 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/dropdown/gf_dropdown.dart';
 import 'package:grocery_app_2022/controller/cart_controller.dart';
+import 'package:grocery_app_2022/controller/favorite_controller.dart';
+import 'package:grocery_app_2022/screens/user/product/product_card.dart';
 
-class FavoritesScreen extends StatefulWidget {
-  const FavoritesScreen({super.key});
+import '../../styles/styles.dart';
 
-  @override
-  State<FavoritesScreen> createState() => _FavoritesScreenState();
-}
+class FavoritesScreen extends StatelessWidget {
+  FavoritesScreen({super.key});
 
-class _FavoritesScreenState extends State<FavoritesScreen> {
-  final CartController c = Get.put(CartController());
+  FavoriteController favoriteController = Get.put(FavoriteController());
 
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = 'FC Barcelona';
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 50,
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.all(20),
-            child: DropdownButtonHideUnderline(
-              child: GFDropdown(
-                padding: const EdgeInsets.all(15),
-                borderRadius: BorderRadius.circular(10),
-                border: const BorderSide(color: Colors.black12, width: 1),
-                dropdownButtonColor: Colors.white,
-                value: dropdownValue,
-                onChanged: (dynamic newValue) {
-                  setState(() {
-                    dropdownValue = newValue;
-                  });
-                },
-                items: [
-                  'FC Barcelona',
-                  'Real Madrid',
-                  'Villareal',
-                  'Manchester City'
-                ]
-                    .map((value) => DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        ))
-                    .toList(),
-              ),
-            ),
-          ),
-        ],
+    return Scaffold(
+      body: Obx(
+        (() => favoriteController.favorites.isEmpty
+            ? Center(
+                child: Text(
+                "No products in favorites",
+                style: Styles.headLineStyle3,
+              ))
+            : ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: 1 / 1.3,
+                      children: List.generate(
+                        favoriteController.favorites.length,
+                        (index) {
+                          return ProductCard(
+                            product: favoriteController.favorites[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              )),
       ),
     );
   }

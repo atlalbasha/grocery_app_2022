@@ -24,27 +24,28 @@ class AllProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        (() => ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    childAspectRatio: 1 / 1.3,
-                    children: List.generate(
-                      productController.products.length,
-                      (index) {
-                        return ProductCard(
-                          product: productController.products[index],
-                        );
-                      },
+        (() => Padding(
+              padding: const EdgeInsets.only(
+                  top: 10, left: 20, right: 20, bottom: 10),
+              child: productController.products.isNotEmpty
+                  ? GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: 1 / 1.3,
+                      children: List.generate(
+                        productController.products.length,
+                        (index) {
+                          return ProductCard(
+                            product: productController.products[index],
+                          );
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: Text('No Products', style: Styles.headLineStyle3),
                     ),
-                  ),
-                ),
-              ],
             )),
       ),
     );
