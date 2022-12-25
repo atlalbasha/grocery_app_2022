@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gap/gap.dart';
 import 'package:getwidget/components/rating/gf_rating.dart';
+import 'package:getwidget/size/gf_size.dart';
 import 'package:grocery_app_2022/models/product.dart';
 
 import '../../../styles/app_layout.dart';
@@ -14,18 +15,21 @@ class ProductDetails extends StatelessWidget {
   ProductDetails({super.key, required this.product});
   final Product product;
 
-  double rating = 3;
+  double rating = 5;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: [
-          const BuildAppBar(title: 'Product Details'),
+          const Padding(
+            padding: EdgeInsets.all(20),
+            child: BuildAppBar(title: 'Product Details'),
+          ),
           Center(
             child: SizedBox(
-              // height: AppLayout.getHeight(300),
-              // width: AppLayout.getHeight(300),
+              height: AppLayout.getHeight(300),
+              width: AppLayout.getHeight(300),
               child: Hero(
                 transitionOnUserGestures: true,
                 tag: product,
@@ -57,104 +61,117 @@ class ProductDetails extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(product.title, style: Styles.headLineStyle2),
-                      Text(
-                          product.availableInStock
-                              ? 'Available in stock'
-                              : 'Out of stock',
-                          style: Styles.headLineStyle4),
-                    ],
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.deepOrangeAccent,
-                    icon: Icon(Icons.favorite_border),
-                  ),
-                ],
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(product.title, style: Styles.headLineStyle2),
+                        Text(
+                            product.availableInStock
+                                ? 'Available in stock'
+                                : 'Out of stock',
+                            style: Styles.headLineStyle4),
+                        GFRating(
+                          color: Styles.orangeColor,
+                          borderColor: Styles.orangeColor,
+                          size: AppLayout.getHeight(20),
+                          value: rating,
+                          onChanged: (value) {},
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      color: Colors.deepOrangeAccent,
+                      icon: Icon(Icons.favorite_border),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Styles.orangeColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Icon(
+                      Icons.remove,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Styles.orangeColor,
-                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: Styles.whiteColor),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
-                    Icons.remove,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Styles.whiteColor),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  product.quantity.toString(),
-                  style: Styles.headLineStyle2,
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Styles.orangeColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
+                  child: Text(
+                    product.quantity.toString(),
+                    style: Styles.headLineStyle2,
                   ),
                 ),
-              ),
-              Spacer(),
-              Text(product.price.toString(), style: Styles.headLineStyle2)
-            ],
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: Styles.orangeColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(' ${product.price.toString()}\$',
+                        style: Styles.headLineStyle2),
+                    Text('  ${product.unit}', style: Styles.headLineStyle3)
+                  ],
+                ),
+              ],
+            ),
           ),
-          Divider(color: Colors.blueGrey),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Divider(color: Colors.blueGrey),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Product Description'),
-                SizedBox(height: 8),
-                Text(product.description),
+                Text('Product Description', style: Styles.headLineStyle2),
+                const Gap(10),
+                Text(product.description, style: Styles.headLineStyle4),
               ],
             ),
-          ),
-          GFRating(
-            color: Styles.orangeColor,
-            borderColor: Styles.orangeColor,
-            value: rating,
-            onChanged: (value) {
-              // setState(() {
-              //   rating = value;
-              // });
-            },
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -167,7 +184,7 @@ class ProductDetails extends StatelessWidget {
               ),
             ),
           ),
-          Gap(20),
+          const Gap(20),
         ],
       ),
     );

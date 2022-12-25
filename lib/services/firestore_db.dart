@@ -229,7 +229,7 @@ class FirestoreDB {
   }
 
   Stream<List<Product>> getCart() {
-    String uid = _userController.myUser.uid.toString();
+    String uid = _userController.userFirebase!.uid.toString();
 
     return _firestore
         .collection('users')
